@@ -1,4 +1,4 @@
-# Báo Cáo Áp Dụng AI - Nhóm Day28_Track01_Van_Hanh
+# Báo Cáo Áp Dụng AI - Nhóm Day28_Track01_TeamXX
 
 ## 1. Danh sách thành viên và phân công công việc
 
@@ -63,7 +63,22 @@
 | **Tổ chức chưa sẵn sàng (Readiness thiếu)** | Bổ nhiệm **Data Owner & Governance** | Chỉ định Data Owner dọn dẹp tài liệu hết hạn; phân quyền truy cập tài liệu theo cấp bậc. |
 | **Đo lường sai (chỉ đo activity)** | Tái cấu trúc **Hệ thống Đo lường theo Giá trị** | Chuyển từ đếm login/prompts sang đo thời gian tác vụ (AHT) và tỷ lệ làm lại (Rework rate). |
 
-### 4.2 Thiết kế Kiến trúc Tin cậy (Trust Architecture)
+### 4.2 Thiết kế Quy trình AS-IS vs TO-BE (So sánh trực quan & 3 thay đổi bắt buộc)
+
+| Bước thực hiện | Quy trình cũ (AS-IS) | Quy trình mới có AI (TO-BE) | Phân định vai trò & Trách nhiệm |
+| :--- | :--- | :--- | :--- |
+| **Bước 1: Tiếp nhận yêu cầu** | Nhận tình huống nghiệp vụ, mở nhiều thư mục mạng chia sẻ tìm file PDF/Word. | Nhập yêu cầu tra cứu vào DocBot RAG theo template chuẩn hóa. | **Nhân viên vận hành** thực hiện |
+| **Bước 2: Tìm kiếm & Tổng hợp** | Đọc lướt nhiều tài liệu cũ, dễ nhầm lẫn phiên bản bãi bỏ. Mất 12–15 phút. | AI tự động trích xuất đoạn văn bản, tóm tắt và **bắt buộc hiển thị Citations (Số hiệu, trang, ngày hiệu lực)**. Mất 10–30 giây. | **AI hỗ trợ (Mollick)** |
+| **Bước 3: Kiểm chứng nguồn** *(BẮT BUỘC 1)* | Bỏ qua hoặc chỉ dựa trên trí nhớ; nếu phân vân thì hỏi miệng đồng nghiệp xung quanh. | **Bắt buộc click đối chiếu trực tiếp trích dẫn văn bản gốc** và kiểm tra trạng thái hiệu lực (Metadata). | **Nhân viên vận hành (Chịu trách nhiệm kiểm chứng)** |
+| **Bước 4: Xử lý khi AI sai/không chắc** *(BẮT BUỘC 2)* | Không có cơ chế báo lỗi; nhân viên tự đoán hoặc đùn đẩy trách nhiệm. | **Bấm nút Báo lỗi (Feedback)** & **Kích hoạt Fallback chuyển tự động sang Trưởng ca/Chuyên gia** giải đáp. | **Hệ thống AI & Trưởng ca vận hành** |
+| **Bước 5: Ký duyệt & Thực thi** *(BẮT BUỘC 3)* | Thực thi nhưng dễ sai sót chính sách mới; không ai chịu trách nhiệm giải trình. | Tick chọn checkbox "Đã kiểm chứng nguồn", ký duyệt kết quả nghiệp vụ và thực thi an toàn. | **Nhân viên vận hành (Chịu trách nhiệm cuối)** |
+
+> **Ba thay đổi cốt lõi trong quy trình TO-BE:**
+> 1. **Nguồn kiểm chứng:** Mọi câu trả lời AI đều đính kèm trích dẫn văn bản gốc và ngày hiệu lực để đối chiếu.
+> 2. **Người chịu trách nhiệm:** Nhân viên vận hành giữ quyền phê duyệt và chịu trách nhiệm cho kết quả nghiệp vụ cuối cùng.
+> 3. **Xử lý khi AI không chắc:** Cơ chế nút Báo lỗi kèm chuyển giao tự động (Fallback) cho Trưởng ca khi độ tin cậy thấp.
+
+### 4.3 Thiết kế Kiến trúc Tin cậy (Trust Architecture) & 4 Điều kiện Mức sẵn sàng
 Chuỗi kiểm soát vận hành khép kín:
 $$\text{Nguồn dữ liệu có Data Owner} \longrightarrow \text{Trích nguồn bắt buộc (Citations)} \longrightarrow \text{QA kiểm tra mẫu 20%} \longrightarrow \text{Chuyển giao người khi không chắc (Fallback)} \longrightarrow \text{Vòng phản hồi & Học từ lỗi}$$
 
@@ -73,7 +88,7 @@ $$\text{Nguồn dữ liệu có Data Owner} \longrightarrow \text{Trích nguồn
   3. *Phạm vi rõ ràng:* Ban hành bảng phân định Jagged Frontier (việc được dùng AI và việc cấm dùng).
   4. *Chi phí & Vận hành:* Thiết lập trần chi phí Token RAG và quy chế xử lý sự cố.
 
-### 4.3 Lộ trình 30–60–90 ngày: Ba Cổng Quyết định dựa trên Bằng chứng (Gate Decision Process)
+### 4.4 Lộ trình 30–60–90 ngày: Ba Cổng Quyết định dựa trên Bằng chứng (Gate Decision Process)
 
 ```
 [0 - 30 ngày: CỔNG 1] --------------> [31 - 60 ngày: CỔNG 2] --------------> [61 - 90 ngày: CỔNG 3]
