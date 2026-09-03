@@ -45,10 +45,22 @@ Sau 6 tuần triển khai và cấp tài khoản sử dụng Trợ lý AI tra c�
 
 ---
 
-## 3. Các thay đổi sau phản biện chéo (Dự kiến hoàn thiện tại Chặng 3)
-*(Sẽ cập nhật tối thiểu 2 điểm thay đổi cụ thể sau khi nhận phản biện từ nhóm bạn tại Chặng 3)*
-1. *Cải tiến 1:* Bổ sung cơ chế Fallback (chuyển giao cho người) khi độ tin cậy AI < 80%.
-2. *Cải tiến 2:* Thay đổi chỉ số đo lường trên Dashboard từ số lượt truy vấn sang Tỷ lệ làm lại (Rework Rate) và Thời gian xử lý từ log hệ thống.
+## 3. Các thay đổi sau phản biện chéo từ Nhóm Chicken Plus (Changes in v2)
+
+### 3.1 Góp ý nhận được từ Nhóm bạn (Chicken Plus)
+* **Ưu điểm được ghi nhận:** Nhóm khóa phạm vi rõ ràng (DocBot RAG cho 35 nhân sự vận hành với 3 quy trình cụ thể); sử dụng chuẩn xác Gartner-Lite, Mollick, ADKAR để bóc tách triệu chứng "ít dùng" khỏi nguyên nhân gốc (thiếu kiến trúc tin cậy & thiếu bước kiểm chứng trong quy trình); quy trình AS-IS/TO-BE đủ 3 thay đổi bắt buộc; lộ trình 30-60-90 thiết kế theo cổng quyết định có owner rõ ràng; quyết định "Sửa trước khi mở rộng" hợp lý với bằng chứng hiện có.
+* **Khuyết điểm cần khắc phục:**
+  1. Sản phẩm còn lỗ hổng lớn về độ tin cậy do câu trả lời thiếu trích dẫn nguồn và ngày hiệu lực văn bản, khiến nhân viên không dám tin dùng.
+  2. Quy trình chưa gắn bước kiểm chứng bắt buộc, chưa có nút báo lỗi và thiếu cơ chế chuyển giao (Fallback) khi AI không chắc chắn.
+  3. Kho tài liệu thiếu metadata chuẩn hóa và chưa có Data Owner chịu trách nhiệm cập nhật.
+  4. Hệ thống đo lường v1 chủ yếu đo thời gian ước tính, cần tăng cường đo lường kiểm soát rủi ro thực tế từ log hệ thống.
+
+### 3.2 Ba thay đổi cải tiến cốt lõi trong Bản v2 (Đối chiếu với v1)
+1. **Thay đổi 1 — Bổ sung cơ chế và chỉ số Rủi ro & Fallback (Tầng 6):** Bổ sung chỉ số *Tỷ lệ yêu cầu kích hoạt Fallback chuyển giao tự động sang Trưởng ca khi AI không chắc chắn (độ tin cậy < 80%)* với mục tiêu $\le 6\%$ từ log hệ thống `Fallback & Handoff Tickets`. Bổ sung nút báo lỗi (Report/Flag inaccurate info) trực tiếp trên giao diện bot.
+2. **Thay đổi 2 — Chuyển từ khuyến khích sang chốt chặn kiểm chứng nguồn bắt buộc (Source Verification Gate ở Tầng 2):** Nâng mục tiêu *Tỷ lệ nhân viên thực hiện đối chiếu nguồn* từ $85\%$ lên $\ge 90\%$. Hệ thống UI bắt buộc người dùng click mở văn bản gốc để xem mã hiệu và ngày hiệu lực trước khi nút "Xác nhận hoàn thành SOP" được mở.
+3. **Thay đổi 3 — Siết chặt chỉ số Năng suất và Chất lượng (Tầng 3 & Tầng 4):** 
+   - Tối ưu hóa pipeline RAG để rút ngắn thời gian xử lý trung bình (AHT) từ mục tiêu 4.0 phút xuống $\le 3.5$ phút/yêu cầu.
+   - Siết chặt ngưỡng Tỷ lệ làm lại (Rework Rate) $\le 3\%$; nếu chỉ số xấu, lập tức kích hoạt quy trình rà soát khẩn với Data Owner để bóc tách tài liệu hết hạn khỏi cơ sở dữ liệu vector.
 
 ---
 

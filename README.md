@@ -2,10 +2,10 @@
 
 ## 1. Danh sách thành viên và phân công công việc
 
-| Họ tên | MSSV | Phần phụ trách chính | Góp ý đã đưa cho nhóm bạn (Chặng 3) |
+| Họ tên | MSSV | Phần phụ trách chính | Góp ý đã đưa cho nhóm bạn (Nhóm Chicken Plus — Dự án HPTravelAI) |
 | :--- | :--- | :--- | :--- |
-| **Mai Hồng Sơn** | `2A202601921` | **Lead Chẩn đoán & Quản trị**: Khóa phạm vi, phân tích Gartner-Lite, xác định bằng chứng, thiết kế Kiến trúc tin cậy, xây dựng Lộ trình 30-60-90 ngày theo 3 Cổng quyết định, chủ trì viết `memo_quyet_dinh.md` & tổng hợp README. | *(Ghi nhận sau Chặng 3: Nhận xét nhóm bạn về tính khả thi của dữ liệu và phân chia vai trò)* |
-| **Nguyễn Tuấn Vũ** | `2A202601845` | **Lead Quy trình & Chỉ số**: Phân tích hành vi ADKAR, phân bổ vai trò Mollick, thiết kế quy trình AS-IS / TO-BE, thiết kế & cập nhật `dashboard_hanh_dong_v1` và `v2`. | *(Ghi nhận sau Chặng 3: Nhận xét nhóm bạn về việc chuyển từ Activity metrics sang Decision metrics)* |
+| **Mai Hồng Sơn** | `2A202601921` | **Lead Chẩn đoán & Quản trị**: Khóa phạm vi, phân tích Gartner-Lite, xác định bằng chứng, thiết kế Kiến trúc tin cậy, xây dựng Lộ trình 30-60-90 ngày theo 3 Cổng quyết định, chủ trì viết `memo_quyet_dinh.md` & tổng hợp README. | **Phản biện trục Phạm vi & Gartner-Lite (Readiness):** Mô hình tổng hợp review từ MXH bên thứ ba (TikTok/Facebook) có rủi ro lớn về tính ổn định của nguồn dữ liệu và bản quyền/scraping. Đề xuất nhóm bổ sung cơ chế dự phòng dữ liệu nếu API bên thứ ba bị chặn hoặc thay đổi cấu trúc, đồng thời cam kết rõ Data Freshness SLA (thời hạn làm mới dữ liệu tối đa 48h) và quy định trách nhiệm Data Owner kiểm duyệt nội dung trước khi nạp vào vector store. |
+| **Nguyễn Tuấn Vũ** | `2A202601845` | **Lead Quy trình & Chỉ số**: Phân tích hành vi ADKAR, phân bổ vai trò Mollick, thiết kế quy trình AS-IS / TO-BE, thiết kế & cập nhật `dashboard_hanh_dong_v1` và `v2`. | **Phản biện trục Chỉ số & Hành động (UX vs Compliance):** Ở Dashboard Tầng 2, chỉ số *Tỷ lệ xem bài review gốc* đặt target ≥ 70% và hành động khi chỉ số xấu là cưỡng bức hiển thị Popover Checklist 3 điểm có thể tạo ma sát trải nghiệm (UX friction) quá lớn cho Gen Z. Đề xuất đổi cơ chế phạt sang Gamification (thưởng điểm uy tín/voucher khi đối chiếu nguồn); đồng thời cần công thức hóa rõ ràng cách tính *Trust Score (ngưỡng 8/10)* ở Tầng 4 để tránh đo cảm tính. |
 
 ---
 
@@ -110,15 +110,27 @@ $$\text{Nguồn dữ liệu có Data Owner} \longrightarrow \text{Trích nguồn
 
 ---
 
-## 5. Hệ thống chỉ số (Dashboard Metrics)
+## 5. Hệ thống chỉ số (Action Dashboard v2)
 
-* **Product Metric:** Tỷ lệ câu trả lời AI có đầy đủ trích nguồn hợp lệ và ngày cập nhật (Baseline: 18% $\rightarrow$ Target: ≥ 95% | Nguồn: Log hệ thống RAG | Owner: Mai Hồng Sơn).
-* **Workflow Metric:** Thời gian xử lý trung bình một yêu cầu tra cứu - AHT (Baseline: 14.5 phút $\rightarrow$ Target: ≤ 4.0 phút | Nguồn: Ticket duration log | Owner: Trưởng ca Vận hành).
-* **Quality Metric:** Tỷ lệ yêu cầu phải làm lại do thông tin sai - Rework Rate (Baseline: 26% $\rightarrow$ Target: ≤ 3% | Nguồn: QA mẫu 20% ca trực | Owner: Trưởng nhóm QA).
+*Chi tiết đối chiếu: [`dashboard/dashboard_hanh_dong_v2.csv`](dashboard/dashboard_hanh_dong_v2.csv) (bản v2) và [`v1/dashboard_hanh_dong_v1.csv`](v1/dashboard_hanh_dong_v1.csv) (bản v1).*
+
+| Tầng đo lường | Loại chỉ số | Tên chỉ số ra quyết định | Mốc ban đầu (Baseline) | Mục tiêu (Target) | Nguồn dữ liệu (Source) | Người phụ trách (Owner) | Hành động cụ thể khi chỉ số xấu |
+| :--- | :--- | :--- | :---: | :---: | :--- | :---: | :--- |
+| **1. Sử dụng** | **Product Metric** | Tỷ lệ câu trả lời AI có đầy đủ trích nguồn văn bản và ngày hiệu lực | 18% | ≥ 95% | Log RAG & Citation parser | Mai Hồng Sơn | Tạm dừng sinh tự do; kiểm tra lại pipeline metadata và semantic chunking. |
+| **2. Hành vi** | **Workflow Metric** | Tỷ lệ nhân viên thực hiện đối chiếu nguồn và tick xác nhận trước khi áp dụng SOP | 12% | ≥ 90% | Telemetry click Verify Citation | Nguyễn Tuấn Vũ | Bật pop-up bắt buộc click link văn bản gốc trước khi kích hoạt nút 'Xác nhận'. |
+| **3. Năng suất** | **Workflow Metric** | Thời gian trung bình hoàn thành một yêu cầu tra cứu SOP (AHT) | 14.5 phút | ≤ 3.5 phút | Ticket duration log hệ thống | Trưởng ca Vận hành | Tinh chỉnh độ trễ RAG (< 5s); bổ sung danh mục query template chuẩn hóa. |
+| **4. Chất lượng & Tin cậy** | **Workflow Metric** | Tỷ lệ yêu cầu phải làm lại do thông tin sai/hết hạn (Rework Rate) | 26% | ≤ 3% | Báo cáo QA mẫu 20% ca trực | Trưởng nhóm QA | Rà soát khẩn với Data Owner; tạm đình chỉ các tài liệu bị gắn cờ báo lỗi. |
+| **5. Giá trị** | **Business Metric** | Chi phí xử lý khiếu nại phát sinh từ áp dụng sai quy trình | 35 tr VNĐ / tháng | Giảm ≥ 60% (≤ 14 tr) | Báo cáo tài chính & bồi hoàn | Giám đốc Vận hành | Đánh giá lại mức độ sẵn sàng; dừng tính năng tự động và siết chặt 100% duyệt người. |
+| **6. Rủi ro & Fallback** | **Workflow Metric** | Tỷ lệ kích hoạt Fallback chuyển tự động sang Trưởng ca khi AI không chắc (< 80%) | 0% (chưa có) | ≤ 6% | Log Fallback & Handoff Tickets | Mai Hồng Sơn & Trưởng ca | Nếu > 8%: Họp kỹ thuật bổ sung dữ liệu vào vùng khuyết; cập nhật prompt lọc câu hỏi. |
 
 ---
 
-## 6. Quyết định (Decision)
+## 6. Quyết định & Thay đổi sau phản biện chéo (Decision & Changes in v2)
 
-* **Quyết định đề xuất:** **SỬA (REPAIR / PIVOT)** trước khi tiếp tục mở rộng.
-* **Lý do cốt lõi:** Vấn đề không nằm ở việc nhân viên "chống đối" hay "thiếu kỹ năng prompt", mà nằm ở độ tin cậy của hệ thống (Readiness & Trust Architecture) và quy trình giao việc chưa rõ ràng. Cần hoàn thiện kiến trúc tin cậy và chuẩn hóa quy trình SOP trước khi mở rộng rollout toàn công ty.
+### 6.1 Quyết định đề xuất: 🟡 SỬA TRƯỚC KHI MỞ RỘNG (REPAIR / PIVOT)
+* **Lý do cốt lõi:** Vấn đề sụt giảm sử dụng không bắt nguồn từ việc nhân viên "chống đối" hay "thiếu kỹ năng prompt", mà do lỗ hổng nghiêm trọng về **Kiến trúc tin cậy (câu trả lời thiếu trích dẫn nguồn/ngày hiệu lực)** và **Quy trình chưa tích hợp cơ chế kiểm chứng & chuyển giao rủi ro**. Cần hoàn thiện bản vá v2 và vượt qua Cổng 1 (Gate 30) trước khi mở rộng quy mô.
+
+### 6.2 Các thay đổi cốt lõi so với bản v1 (Dựa trên góp ý của nhóm Chicken Plus):
+1. **Bổ sung cơ chế Fallback và nút Báo lỗi (Tầng 6):** Khắc phục trực tiếp khuyết điểm *"chưa có nút báo lỗi và cơ chế chuyển giao khi AI không chắc"* mà nhóm Chicken Plus chỉ ra; thiết lập chỉ số Fallback chuyển giao Trưởng ca với target $\le 6\%$.
+2. **Thiết lập chốt chặn kiểm chứng nguồn bắt buộc (Source Verification Gate ở Tầng 2):** Khắc phục khuyết điểm *"nhân viên không dám dùng do sợ sai"* bằng cách bắt buộc đối chiếu văn bản gốc trên giao diện trước khi hoàn tất tác vụ, nâng target lên $\ge 90\%$.
+3. **Chuẩn hóa đo lường Năng suất & Chất lượng thực tế (Tầng 3 & Tầng 4):** Thay vì đo thời gian ước lượng, đo AHT trực tiếp từ log vé tác vụ (giảm mục tiêu xuống $\le 3.5$ phút) và kiểm soát Rework Rate $\le 3\%$ gắn với trách nhiệm dọn dẹp kho văn bản của Data Owner.
