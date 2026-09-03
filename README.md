@@ -80,7 +80,8 @@
 
 ### 4.3 Thiết kế Kiến trúc Tin cậy (Trust Architecture) & 4 Điều kiện Mức sẵn sàng
 Chuỗi kiểm soát vận hành khép kín:
-$$\text{Nguồn dữ liệu có Data Owner} \longrightarrow \text{Trích nguồn bắt buộc (Citations)} \longrightarrow \text{QA kiểm tra mẫu 20%} \longrightarrow \text{Chuyển giao người khi không chắc (Fallback)} \longrightarrow \text{Vòng phản hồi & Học từ lỗi}$$
+
+> **`Nguồn dữ liệu có Data Owner`** ➔ **`Trích nguồn bắt buộc (Citations)`** ➔ **`QA kiểm tra mẫu 20%`** ➔ **`Chuyển giao người khi không chắc (Fallback)`** ➔ **`Vòng phản hồi & Học từ lỗi`**
 
 * **4 Điều kiện Mức sẵn sàng (Readiness Checklist) bắt buộc:**
   1. *Nguồn dữ liệu:* Có Data Owner phụ trách; cập nhật định kỳ ngày 25 hàng tháng; gắn nhãn trạng thái hiệu lực rõ ràng.

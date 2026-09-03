@@ -76,7 +76,8 @@ Nhóm đề xuất quyết định chính thức: **TẠM DỪNG MỞ RỘNG (PA
 
 ### 5.1 Thiết kế Kiến trúc Tin cậy (Trust Architecture) & 4 Điều kiện Mức sẵn sàng
 Để giải quyết tận gốc nguyên nhân thiếu độ tin cậy và thiếu quy trình kiểm chứng, nhóm thiết lập chuỗi cơ chế kiểm soát khép kín:
-$$\text{Nguồn dữ liệu chuẩn hóa} \rightarrow \text{Trích nguồn bắt buộc (Citations)} \rightarrow \text{QA kiểm tra mẫu} \rightarrow \text{Chuyển giao chuyên gia (Fallback)} \rightarrow \text{Vòng phản hồi (Feedback Loop)}$$
+
+> **`Nguồn dữ liệu chuẩn hóa`** ➔ **`Trích nguồn bắt buộc (Citations)`** ➔ **`QA kiểm tra mẫu 20%`** ➔ **`Chuyển giao chuyên gia (Fallback)`** ➔ **`Vòng phản hồi (Feedback Loop)`**
 
 * **4 Điều kiện Mức sẵn sàng (Readiness Checklist) bắt buộc:**
   1. *Data Owner & Lịch cập nhật:* Bổ nhiệm Trưởng bộ phận Nghiệp vụ làm Data Owner; định kỳ rà soát kho văn bản vào ngày 25 hàng tháng; gán nhãn trạng thái hiệu lực (Có hiệu lực / Hết hiệu lực / Đang sửa đổi).
